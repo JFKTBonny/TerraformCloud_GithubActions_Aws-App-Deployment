@@ -33,9 +33,9 @@ db_user_name            = "gitops"
 
 /********** EKS Module ***************/
 
-eks_version    = "1.20"
+eks_version    = "1.30"
 instance_types = ["t3.medium","t3.small"]
 
 /********** Global Variables ***************/
-org_name = "gitops"
-domain   = "gitops.somedomain.com"
+org_name = "JFKTBonny-and-co"
+domain   = "gitops.bonnyzone.site"

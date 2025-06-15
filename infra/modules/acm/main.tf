@@ -2,10 +2,10 @@
 # Validate through DNS only
 resource "aws_acm_certificate" "default" {
   domain_name       = var.domain
-  validation_method = "DNS"
+  validation_method = "DNS" # AWS will give you CNAME records to add to your DNS
 
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = true # Ensures a new certificate is created before destroying the old one during updates (helps with zero-downtime rotation)
   }
 
   tags = {
@@ -28,15 +28,15 @@ resource "aws_route53_record" "default" {
   allow_overwrite = true
   name            = each.value.name
   records         = [each.value.record]
-  ttl             = 60
+  ttl             = 60  # A short TTL helps propagate changes quickly
   type            = each.value.type
-  zone_id         = var.zone_id
+  zone_id         = var.zone_id  # Zone ID: Passed in via var.zone_id, this refers to the Route 53 hosted zone for the domain.
 
 }
 
-# Generate Certificate Validation
+# Generate Certificate Validation: Tells AWS to validate the certificate, using the DNS records you just created.
 resource "aws_acm_certificate_validation" "default" {
-  certificate_arn         = aws_acm_certificate.default.arn
+  certificate_arn         = aws_acm_certificate.default.arn # Links to the ACM certificate created earlier.
   validation_record_fqdns = [for record in aws_route53_record.default : record.fqdn]
 
 }

@@ -1,6 +1,6 @@
-# Practical GitOps
 
-## Chapter 7 - 
+
+
 
 ```bash
 

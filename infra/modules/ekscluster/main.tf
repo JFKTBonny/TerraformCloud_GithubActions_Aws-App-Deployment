@@ -4,33 +4,33 @@ module "eks" {
   version         = "18.26.0"
   cluster_name    = var.clustername
   cluster_version = var.eks_version
-  subnet_ids      = var.private_subnets
+  subnet_ids      = var.private_subnets # Cluster deployed into private subnets.
   vpc_id          = var.vpc_id
-  enable_irsa     = true
+  enable_irsa     = true        # Uses IAM Roles for Service Accounts (IRSA) – best practice for secure pod permissions.
 
-  cluster_addons = {
+  cluster_addons = { 
     coredns = {
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts = "OVERWRITE" # Adds CoreDNS (for internal DNS) and OVERWRITE: ensures existing configurations are updated.
     }
     vpc-cni = {
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts = "OVERWRITE" # VPC CNI (for pod networking) and OVERWRITE: ensures existing configurations are updated.
     }
   }
 
   # Extend node-to-node security group rules
   node_security_group_additional_rules = {
-
+    
     ingress_allow_access_from_control_plane = {
       type                          = "ingress"
       protocol                      = "tcp"
       from_port                     = 9443
       to_port                       = 9443
       source_cluster_security_group = true
-      description                   = "Allow access from control plane to webhook port of AWS load balancer controller"
+      description                   = "Allows secure webhook traffic (port 9443) between control plane and nodes (used by ALB Controller)"
     }
-
+  
     egress_all = {
-      description      = "Node all egress"
+      description      = "Allows all outbound internet traffic from nodes"
       protocol         = "-1"
       from_port        = 0
       to_port          = 0
@@ -42,10 +42,10 @@ module "eks" {
 
   # Default Settings applicable to all node groups
   eks_managed_node_group_defaults = {
-    ami_type          = "AL2_x86_64"
-    disk_size         = 50
-    ebs_optimized     = true
-    enable_monitoring = true
+    ami_type          = "AL2_x86_64" # Nodes use Amazon Linux 2.
+    disk_size         = 50           # Nodes use 50GB disks.
+    ebs_optimized     = true         # EBS optimized enabled.
+    enable_monitoring = true         # Monitoring  enabled.
     instance_types    = var.instance_types
     capacity_type     = "ON_DEMAND"
     desired_size      = 1
@@ -59,7 +59,7 @@ module "eks" {
   eks_managed_node_groups = {
 
     system = {
-      name            = "system"
+      name            = "system" # Typically used for core workloads (monitoring, DNS, etc.).
       use_name_prefix = true
 
       tags = {
@@ -69,7 +69,7 @@ module "eks" {
       }
     },
     app = {
-      name            = "app"
+      name            = "app" # Used for your business applications.
       use_name_prefix = true
 
       tags = {
@@ -79,7 +79,7 @@ module "eks" {
       }
     }
   }
-
+  # Good tagging practice for visibility and cost tracking.
   tags = {
     Name              = var.clustername
     Environment       = var.environment
