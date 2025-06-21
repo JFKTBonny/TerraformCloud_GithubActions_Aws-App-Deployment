@@ -32,8 +32,3 @@ variable "db_user_name" {
   description = "Name of User for Accessing PGQSL Database"
   type        = string
 }
-
-variable "assume_role_account_id" {
-  description = "ID Of the Account which needs to be assumed to run terraform"
-  type        = string
-}

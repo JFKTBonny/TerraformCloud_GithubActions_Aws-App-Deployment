@@ -2,19 +2,19 @@
 accounts = {
   dev = {
     name  = "dev"
-    email = "email+dev@somedomain.com"
+    email = "santonix.dev@hotmail.it"
   },
   identity = {
     name  = "identity"
-    email = "email+identity@somedomain.com"
+    email = "santonix.dev@hotmail.it"
   },
   prod = {
     name  = "prod"
-    email = "email+prod@somedomain.com"
+    email = "santonix.dev@hotmail.it"
   },
   staging = {
     name  = "staging"
-    email = "email+staging@somedomain.com"
+    email = "santonix.dev@hotmail.it"
   }
 }
 
@@ -36,5 +36,5 @@ users = {
   }
 }
 
-org_name = "gitops"
-domain   = "gitops.somedomain.com"
+org_name = "JFKTBonny-and-co"
+domain   = "gitops.bonnyzone.site"

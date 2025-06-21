@@ -1,0 +1,50 @@
+AWS Organizations Hierarchy Summary
+===================================
+
+🏛️ Root Organization
+- The top-level AWS Organization.
+
+📂 Organizational Units (OUs)
+-----------------------------
+        1. Identity Management Account OU
+        - Purpose: Central IAM user and role management
+
+        2. Deployment Accounts OU
+        - Purpose: Hosts production and staging environments
+
+        3. Development Accounts OU
+        - Purpose: Developer sandbox environments
+
+🧾 AWS Accounts per OU
+-----------------------
+        - Identity Management Account OU:
+        - identity_account: is where all IAM Users, Roles, and Gropus will be created...
+
+        - Deployment Accounts OU:
+        - prod_account
+        - staging_account
+
+        - Development Accounts OU:
+        - dev_account: provided to Developers to do their testing independently of staging/prod environments...
+
+          
+### Users: 
+          - will only have access to identity accounts where they can change their passwords/update their MFA 
+            and perform only IAM-related activities...
+
+          - will not be allowed to create EC2 instances or any other functions in the identity account...
+
+          - will be allow to perform all other operations only in their related environments...  
+
+✅ Purpose
+----------
+        This structure provides clear separation of concerns, supporting security, scalability, and organized account management.
+
+Root Org
+├── Identity Management OU
+│   └── Identity Account
+├── Deployment OU
+│   ├── Prod Account
+│   └── Staging Account
+└── Development OU
+    └── Dev Account        

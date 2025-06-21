@@ -1,0 +1,31 @@
+GPG vs SSH Key Generation - Summary
+====================================
+
+1. gpg --generate-key
+----------------------
+    - Tool: GnuPG (gpg)
+    - Key Type: PGP key pair (RSA, Ed25519, etc.)
+    - Purpose: Encryption/signing of files, secrets, and emails.
+    - Format: PGP (.asc, .gpg)
+    - Common Use: Encrypt sensitive data (e.g., Terraform user secrets).
+    - Terraform Use: Encrypt user credentials using PGP public key.
+    - Public Key: Shared to encrypt data; only private key can decrypt.
+
+2. ssh-keygen
+--------------
+    - Tool: OpenSSH
+    - Key Type: SSH key pair (RSA, Ed25519, etc.)
+    - Purpose: Secure shell access to servers (SSH login).
+    - Format: OpenSSH (.pem, .pub)
+    - Common Use: Secure access to remote servers, especially EC2.
+    - Terraform Use: Define EC2 key pairs or SSH provisioning.
+    - Public Key: Uploaded to servers for authentication.
+
+Key Differences
+----------------
+    | Feature            | GPG (gpg --generate-key)           | SSH (ssh-keygen)                     | 
+    |--------------------|------------------------------------|--------------------------------------|
+    | Use Case           | Encrypt secrets, sign files        | SSH server login                     |
+    | Output Format      | .asc, .gpg                         | .pem, .pub                           |
+    | Terraform Context  | Encrypt IAM secrets, pgp_key       | EC2 key pair, SSH provisioning       |
+    | Common Tool        | GnuPG                              | OpenSSH                              |
