@@ -76,7 +76,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -no-color
+        run: terraform plan -no-color -compact-warnings
         continue-on-error: true
 
       - name: Terraform Plan Output
@@ -112,4 +112,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/terraformCloud-GhaCICD' && github.event_name == 'push'
-        run: terraform apply
+        run: terraform apply  -compact-warnings --auto-approve

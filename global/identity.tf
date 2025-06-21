@@ -12,7 +12,7 @@ resource "aws_iam_account_password_policy" "strict" {
 }
 
 ######################################## USER CREATION ###############################################
-# #Create an IAM Policy for users to be able to self-manage their accounts
+# ##Create an IAM Policy for users to be able to self-manage their accounts
 resource "aws_iam_policy" "self_manage" {
   name   = "SelfManaged"
   policy = file("data/self_manage.json")
