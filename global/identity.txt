@@ -76,3 +76,10 @@
         - Ensures access control is dynamically managed per user’s role (developer, admin, readonly).
 
 ---
+
+### list resources by regions:
+       for region in $(aws ec2 describe-regions --query "Regions[*].RegionName" --output text); do
+            echo "Region: $region"
+            aws ec2 describe-instances --region $region --filters Name=instance-state-name,Values=running \
+                --query "Reservations[*].Instances[*].InstanceId" --output text
+        done  
