@@ -1,16 +1,15 @@
 # Create an IAM Policy for to restrict permissions needed for the Load Balancer Controller for operations
 resource "aws_iam_policy" "alb_iam_policy" {
   name   = "AWSLoadBalancerControllerIAMPolicy"
-  policy = file("./modules/alb/iam_policy.json") # Loaded from an external file (iam_policy.json).
+  policy = file("./modules/alb/iam_policy.json")
   tags = {
     "Environment"     = var.environment
     terraform-managed = "true"
-    "${format("kubernetes.io/cluster/%s-%s", var.org_name, var.environment)}" = "owned"
   }
 
 }
 
-# Attach the IAM Policy document to the above IAM Policy: Defines who/what can assume the IAM role.
+# Attach the IAM Policy document to the above IAM Policy
 data "aws_iam_policy_document" "aws-load-balancer-controller" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
@@ -19,7 +18,7 @@ data "aws_iam_policy_document" "aws-load-balancer-controller" {
     condition {
       test     = "StringEquals"
       variable = "${replace(var.oidc_url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"] # The service account aws-load-balancer-controller in the kube-system namespace can assume this role.
+      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
     }
 
     principals {
@@ -30,7 +29,7 @@ data "aws_iam_policy_document" "aws-load-balancer-controller" {
 
 }
 
-# Create an IAM Service Role for Load Balancer: This is the IAM role that the controller will use, based on the above trust policy.
+# Create an IAM Service Role for Load Balancer
 resource "aws_iam_role" "aws-load-balancer-controller" {
   assume_role_policy = data.aws_iam_policy_document.aws-load-balancer-controller.json
   name               = "aws-load-balancer-controller"
@@ -44,23 +43,20 @@ resource "aws_iam_role_policy_attachment" "aws-load-balancer-controller" {
 
 }
 
-
-
-# Deploy AWS Load Balancer Controller via Helm
+# Install the Load Balancer controller using the helm chart.
 resource "helm_release" "lbc" {
   name            = "aws-load-balancer-controller"
   chart           = "aws-load-balancer-controller"
   version         = var.awslb_version
-  repository      = "https://aws.github.io/eks-charts" # Uses the EKS chart from AWS’s Helm repo.
+  repository      = "https://aws.github.io/eks-charts"
   namespace       = "kube-system"
   cleanup_on_fail = true
-  
 
   dynamic "set" {
     for_each = {
       "clusterName"                                               = var.clustername
-      "serviceAccount.name"                                       = "aws-load-balancer-controller" # Uses a service account named aws-load-balancer-controller.
-      "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn" = aws_iam_role.aws-load-balancer-controller.arn # ARN of the IAM role that this controller assumes.
+      "serviceAccount.name"                                       = "aws-load-balancer-controller"
+      "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn" = aws_iam_role.aws-load-balancer-controller.arn
     }
     content {
       name  = set.key

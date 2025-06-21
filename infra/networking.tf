@@ -22,7 +22,6 @@ variable "vpc_cidr" {
   type        = string
 }
 
-
 ######################## MAIN ########################
 
 # Create a cluster name specific to the environment,region and organisation name for uniqueness.
@@ -38,8 +37,6 @@ module "clustername" {
 module "networking" {
   source = "./modules/vpc"
 
-
-  org_name  = var.org_name 
   clustername           = module.clustername.cluster_name
   environment           = var.environment
   vpc_cidr              = var.vpc_cidr
@@ -56,7 +53,6 @@ module "networking" {
 module "pgsql_sg_ingress" {
   source = "./modules/securitygroup"
 
-  clustername           = module.clustername.cluster_name
   sg_name        = "pgsql_sg_ingress"
   sg_description = "Allow Port 5432 from within the VPC"
   environment    = var.environment
@@ -74,7 +70,6 @@ module "pgsql_sg_ingress" {
 module "generic_sg_egress" {
   source = "./modules/securitygroup"
 
-  clustername           = module.clustername.cluster_name
   sg_name        = "generic_sg_egress"
   sg_description = "Allow servers to connect to outbound internet"
   environment    = var.environment

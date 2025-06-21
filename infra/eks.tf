@@ -16,7 +16,6 @@ variable "instance_types" {
 module "eks" {
   source = "./modules/ekscluster"
 
-  org_name  = var.org_name 
   clustername     = module.clustername.cluster_name
   eks_version     = var.eks_version
   private_subnets = module.networking.private_subnets_id
@@ -30,7 +29,6 @@ module "eks" {
 module "alb_ingress" {
   source = "./modules/alb"
 
-  org_name = var.org_name
   clustername   = module.clustername.cluster_name
   oidc_url      = module.eks.cluster_oidc_issuer_url
   oidc_arn      = module.eks.oidc_provider_arn

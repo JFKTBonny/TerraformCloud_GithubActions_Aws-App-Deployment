@@ -27,8 +27,3 @@ variable "instance_types" {
   description = "Instance Types for Deploying the k8s environment"
   type        = list(string)
 }
-
-variable "org_name" {
-  description = "Name of Organisation"
-  type        = string
-}

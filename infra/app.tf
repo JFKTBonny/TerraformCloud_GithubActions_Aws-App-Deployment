@@ -1,7 +1,3 @@
-# locals {
-#   sanitized_org_name = lower(replace(var.org_name, "[^a-z0-9-.]", "-"))
-# }
-
 ################# Create Namespace ##################################
 
 resource "kubernetes_namespace_v1" "app" {
@@ -11,7 +7,7 @@ resource "kubernetes_namespace_v1" "app" {
     }
     name = var.org_name
   }
-  depends_on = [module.eks]
+  depends_on = [module.eks, resource.kubectl_manifest.aws_auth]
 }
 
 ################# Deploy Application ##################################
@@ -21,15 +17,13 @@ module "ssmr-db-password" {
   source = "./modules/ssmr"
 
   parameter_name = "db_password"
-  parameter_path = "${var.org_name}/database"
+  parameter_path = "/${var.org_name}/database"
 
   depends_on = [module.ssmw-db-password]
 }
 
-
 resource "kubernetes_deployment_v1" "app" {
   metadata {
-
     name      = var.org_name
     namespace = kubernetes_namespace_v1.app.metadata.0.name
     labels = {
@@ -133,16 +127,14 @@ resource "kubernetes_ingress_v1" "app" {
     name      = var.org_name
     namespace = kubernetes_namespace_v1.app.metadata.0.name
     annotations = {
-      
+      "kubernetes.io/ingress.class"               = "alb"
       "alb.ingress.kubernetes.io/scheme"          = "internet-facing"
       "alb.ingress.kubernetes.io/target-type"     = "ip"
       "alb.ingress.kubernetes.io/certificate-arn" = module.acm.acm_arn
       "alb.ingress.kubernetes.io/listen-ports"    = "[{\"HTTP\": 80}, {\"HTTPS\":443}]"
-      "alb.ingress.kubernetes.io/healthcheck-path" = "/"
     }
   }
   spec {
-    ingress_class_name = "alb"
     rule {
       host = local.url
       http {
@@ -160,5 +152,5 @@ resource "kubernetes_ingress_v1" "app" {
       }
     }
   }
-  depends_on = [module.alb_ingress]
+  depends_on = [module.alb_ingress, kubernetes_ingress_v1.app]
 }

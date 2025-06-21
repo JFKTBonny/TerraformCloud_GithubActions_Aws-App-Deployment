@@ -32,13 +32,24 @@ terraform {
       version = "2.10.0"
     }
 
+    # Provider to execute kubectl utility through terraform
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = "1.14.0"
+    }
+
   }
   # Setting the Terraform version
-  required_version = ">= 1.0.0"
+  required_version = ">= 1.1.0"
 }
 
 # Feeding the AWS providers with the data it needs
+locals {
+  assume_role_arn = "arn:aws:iam::${var.assume_role_account_id}:role/AssumeRoleAdmin${var.environment}"
+}
 provider "aws" {
-  # Set the default region
+  assume_role {
+    role_arn = local.assume_role_arn
+  }
   region = var.region
 }

@@ -1,13 +1,10 @@
+# Practical GitOps
 
-
-
+## Chapter 8 - Infra Setup
 
 ```bash
-
-aws route53 create-hosted-zone --name gitops.rohitsalecha.com --caller-reference 2022-01-20-24:35
-aws route53 list-hosted-zones
-aws route53 delete-hosted-zone --id Z09740762V0VBII120RGX
-
+export org_name="practicalgitops"
+export region=us-east-2
 
 REGION=$(terraform output -raw region)
 CLUSTER=$(terraform output -raw cluster_name)

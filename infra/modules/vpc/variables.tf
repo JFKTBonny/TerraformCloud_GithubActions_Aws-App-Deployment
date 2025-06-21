@@ -43,8 +43,3 @@ variable "vpc_cidr" {
   description = "The CIDR block of the vpc"
   type        = string
 }
-
-variable "org_name" {
-  description = "Name of Organisation"
-  type        = string
-}

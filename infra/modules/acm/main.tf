@@ -2,16 +2,15 @@
 # Validate through DNS only
 resource "aws_acm_certificate" "default" {
   domain_name       = var.domain
-  validation_method = "DNS" # AWS will give you CNAME records to add to your DNS
+  validation_method = "DNS"
 
   lifecycle {
-    create_before_destroy = true # Ensures a new certificate is created before destroying the old one during updates (helps with zero-downtime rotation)
+    create_before_destroy = true
   }
 
   tags = {
     Environment       = var.environment
     terraform-managed = "true"
-    "${format("kubernetes.io/cluster/%s-%s", var.org_name, var.environment)}" = "owned"
   }
 
 }
@@ -29,15 +28,15 @@ resource "aws_route53_record" "default" {
   allow_overwrite = true
   name            = each.value.name
   records         = [each.value.record]
-  ttl             = 60  # A short TTL helps propagate changes quickly
+  ttl             = 60
   type            = each.value.type
-  zone_id         = var.zone_id  # Zone ID: Passed in via var.zone_id, this refers to the Route 53 hosted zone for the domain.
+  zone_id         = var.zone_id
 
 }
 
-# Generate Certificate Validation: Tells AWS to validate the certificate, using the DNS records you just created.
+# Generate Certificate Validation
 resource "aws_acm_certificate_validation" "default" {
-  certificate_arn         = aws_acm_certificate.default.arn # Links to the ACM certificate created earlier.
+  certificate_arn         = aws_acm_certificate.default.arn
   validation_record_fqdns = [for record in aws_route53_record.default : record.fqdn]
 
 }
