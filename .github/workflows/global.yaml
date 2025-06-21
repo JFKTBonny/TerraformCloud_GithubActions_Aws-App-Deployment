@@ -1,4 +1,4 @@
-name: practicalgitops.global
+name: TerraformCloud_GithubActions_Aws-App-Deployment
 
 on:
   push:
