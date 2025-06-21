@@ -11,6 +11,7 @@ resource "aws_acm_certificate" "default" {
   tags = {
     Environment       = var.environment
     terraform-managed = "true"
+    "${format("kubernetes.io/cluster/%s-%s", var.org_name, var.environment)}" = "owned"
   }
 
 }

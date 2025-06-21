@@ -9,5 +9,5 @@ RUN addgroup boot && adduser -D -h /home/boot -s /bin/ash boot -G boot
 USER boot
 WORKDIR /home/boot
 COPY --from=MAVEN_BUILD /build/target/gitops.jar /home/boot/gitops.jar
-EXPOSE 8080
+EXPOSE 8088
 CMD java -jar /home/boot/gitops.jar

@@ -5,6 +5,7 @@ resource "aws_iam_policy" "alb_iam_policy" {
   tags = {
     "Environment"     = var.environment
     terraform-managed = "true"
+    "${format("kubernetes.io/cluster/%s-%s", var.org_name, var.environment)}" = "owned"
   }
 
 }
@@ -43,6 +44,8 @@ resource "aws_iam_role_policy_attachment" "aws-load-balancer-controller" {
 
 }
 
+
+
 # Deploy AWS Load Balancer Controller via Helm
 resource "helm_release" "lbc" {
   name            = "aws-load-balancer-controller"
@@ -51,6 +54,7 @@ resource "helm_release" "lbc" {
   repository      = "https://aws.github.io/eks-charts" # Uses the EKS chart from AWS’s Helm repo.
   namespace       = "kube-system"
   cleanup_on_fail = true
+  
 
   dynamic "set" {
     for_each = {

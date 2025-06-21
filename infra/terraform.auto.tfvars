@@ -22,10 +22,10 @@ database_subnets_cidr = [
 /********** RDS Module ***************/
 
 db_engine               = "postgres"
-db_engine_version       = "14.1"
-db_major_engine_version = "14"
+db_engine_version       = "12.22"
+db_major_engine_version = "12"
 db_instance_class       = "db.t4g.small"
-db_engine_family        = "postgres14"
+db_engine_family        = "postgres12"
 db_allocated_storage    = 40
 db_maximum_storage      = 100
 db_name                 = "gitops"
@@ -37,5 +37,5 @@ eks_version    = "1.30"
 instance_types = ["t3.medium","t3.small"]
 
 /********** Global Variables ***************/
-org_name = "JFKTBonny-and-co"
+org_name = "jfktbonny"
 domain   = "gitops.bonnyzone.site"

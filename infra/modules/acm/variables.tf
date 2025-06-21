@@ -13,3 +13,8 @@ variable "environment" {
   type        = string
 }
 
+variable "org_name" {
+  description = "Name of Organisation"
+  type        = string
+}
+

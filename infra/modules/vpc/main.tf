@@ -20,16 +20,38 @@ module "vpc" {
     "kubernetes.io/cluster/${var.clustername}" = "shared"
     "Name"                                     = "${var.clustername}-vpc"
     "Environment"                              = var.environment
-    terraform-managed                          = "true"
+    terraform-managed = "true"
+    "${format("kubernetes.io/cluster/%s-%s", var.org_name, var.environment)}" = "owned"                        
   }
 
   public_subnet_tags = {
     "kubernetes.io/cluster/${var.clustername}" = "shared"
-    "kubernetes.io/role/elb"                   = "1"
+    "kubernetes.io/role/elb"                   = "1"  # ✅ Needed so the ALB Controller can use public subnets for internet-facing load balancers.
+    "${format("kubernetes.io/cluster/%s-%s", var.org_name, var.environment)}" = "owned" 
   }
 
   private_subnet_tags = {
     "kubernetes.io/cluster/${var.clustername}" = "shared"
-    "kubernetes.io/role/internal-elb"          = "1"
+    "kubernetes.io/role/internal-elb"          = "1" # ✅ Needed for internal load balancers (used for internal services or private ingress).
+    "${format("kubernetes.io/cluster/%s-%s", var.org_name, var.environment)}" = "owned" 
   }
 }
+
+  # notes: 
+  #       🟡 Optional: Minor Cleanup Suggestion:
+  #         You could define your tags centrally in a locals block for consistency:
+
+  #                 locals {
+  #                   cluster_tag_key = "kubernetes.io/cluster/${var.clustername}"
+  #                   formatted_cluster_tag = format("kubernetes.io/cluster/%s-%s", var.org_name, var.environment)
+  #                 }
+                  
+  #             Then use:
+
+
+  #                 tags = {
+  #                   (local.cluster_tag_key)       = "shared"
+  #                   (local.formatted_cluster_tag) = "owned"
+  #                   ...
+  #                 }
+

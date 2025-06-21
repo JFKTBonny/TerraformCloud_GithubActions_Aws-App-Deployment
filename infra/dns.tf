@@ -27,6 +27,7 @@ data "aws_route53_zone" "domain" {
 module "acm" {
   source = "./modules/acm"
 
+  org_name = var.org_name
   zone_id     = data.aws_route53_zone.domain.zone_id
   domain      = local.url
   environment = var.environment

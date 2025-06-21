@@ -33,3 +33,8 @@ variable "parameter_description" {
   description = "Description of the SSM Parameter"
   type        = string
 }
+
+variable "org_name" {
+  description = "Name of Organisation"
+  type        = string
+}

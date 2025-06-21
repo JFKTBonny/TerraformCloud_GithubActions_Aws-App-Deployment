@@ -46,6 +46,12 @@ variable "cidr_blocks" {
   type        = list(string)
 }
 
+variable "clustername" {
+  description = "Cluster Name"
+  type        = string
+}
+
+
 
 
 

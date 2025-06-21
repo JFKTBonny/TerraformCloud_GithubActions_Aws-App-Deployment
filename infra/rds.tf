@@ -1,3 +1,5 @@
+
+
 ######################## VARIABLES ########################
 variable "db_allocated_storage" {
   description = "DB Storage during allocation/creation"
@@ -41,7 +43,7 @@ module "pgsql" {
   source  = "terraform-aws-modules/rds/aws"
   version = "4.4.0"
 
-  identifier                      = "${module.clustername.cluster_name}-pgsql"
+  identifier                      = lower(substr("${module.clustername.cluster_name}-pgsql", 0, 38))
   engine                          = var.db_engine
   engine_version                  = var.db_engine_version
   family                          = var.db_engine_family
@@ -86,9 +88,11 @@ module "pgsql" {
 
 # Write the DB random password in SSM
 module "ssmw-db-password" {
+
+  org_name = var.org_name
   source                = "./modules/ssmw"
   parameter_name        = "db_password"
-  parameter_path        = "/${var.org_name}/database"
+  parameter_path        = "${var.org_name}/database"
   parameter_value       = module.pgsql.db_instance_password
   parameter_description = "DB Password"
   clustername           = module.clustername.cluster_name
@@ -100,8 +104,9 @@ module "ssmw-db-password" {
 module "ssmw-db-endpoint" {
   source = "./modules/ssmw"
 
+  org_name = var.org_name
   parameter_name        = "db_endpoint_url"
-  parameter_path        = "/${var.org_name}/database"
+  parameter_path        = "${var.org_name}/database"
   parameter_value       = module.pgsql.db_instance_address
   parameter_description = "Endpoint URL of postgresql"
   clustername           = module.clustername.cluster_name

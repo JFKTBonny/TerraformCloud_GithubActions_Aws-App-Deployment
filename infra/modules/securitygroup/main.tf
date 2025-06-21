@@ -9,6 +9,7 @@ resource "aws_security_group" "security_group" {
   tags = {
     "Environment"     = var.environment
     terraform-managed = "true"
+    "kubernetes.io/cluster/${var.clustername}" = "owned"
   }
 }
 

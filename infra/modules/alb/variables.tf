@@ -22,3 +22,8 @@ variable "awslb_version" {
   description = "AWS Helm Chart Version"
   type        = string
 }
+
+variable "org_name" {
+  description = "Name of Organisation"
+  type        = string
+}

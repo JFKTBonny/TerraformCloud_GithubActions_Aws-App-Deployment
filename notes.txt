@@ -1,0 +1,11 @@
+**** Routes53 is a service provided by AWS  to help us mange our DNS records...
+     DNS records are managed through a file called "Zone" files...
+     Route53 makes use of "hosted zones"...
+     Hosted zones are container of DNS records..
+
+    ****  Route 53 = DNS service and domain hosting inside AWS
+
+          ACM (AWS Certificate Manager) = Provisioning and managing free SSL/TLS certificates for secure HTTPS
+
+          SSM (Systems Manager) = Secure, password/keyless remote access and management of EC2 instances (and more) without needing SSH keys or open ports
+                
