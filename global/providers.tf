@@ -49,7 +49,7 @@ provider "aws" {
   region = var.region
 }
 
-# Provider configuration for Assuming Administrator Role in Dev account.
+# # Provider configuration for Assuming Administrator Role in Dev account.
 provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${module.dev_account.id}:role/Administrator"
