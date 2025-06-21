@@ -2,19 +2,19 @@
 accounts = {
   dev = {
     name  = "dev"
-    email = "santonix.dev@hotmail.it"
+    email = "jkamkotoyip@yahoo.com"
   },
   identity = {
     name  = "identity"
-    email = "santonix.dev@hotmail.it"
+    email = "jkamkotoyip@yahoo.com"
   },
   prod = {
     name  = "prod"
-    email = "santonix.dev@hotmail.it"
+    email = "jkamkotoyip@yahoo.com"
   },
   staging = {
     name  = "staging"
-    email = "santonix.dev@hotmail.it"
+    email = "jkamkotoyip@yahoo.com"
   }
 }
 
