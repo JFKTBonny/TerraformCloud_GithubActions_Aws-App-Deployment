@@ -31,7 +31,7 @@ module "assume_admin_role" {
 
 }
 
-# Create a Hosted Zone with provided domain name
+# #Create a Hosted Zone with provided domain name
 # Export the Nameservers to update the DNS Records.
 resource "aws_route53_zone" "default" {
   name = var.domain
