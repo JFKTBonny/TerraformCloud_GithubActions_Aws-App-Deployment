@@ -1,4 +1,4 @@
-# Setting and locking the Dependencies to specific versions
+# # Setting and locking the Dependencies to specific versions
 terraform {
   required_providers {
 
