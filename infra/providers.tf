@@ -5,7 +5,7 @@ terraform {
     # AWS Cloud Provider
     aws = {
       source  = "hashicorp/aws"
-      version = "4.10"
+      version = ">= 5.95.0, < 6.0.0"
     }
 
     # TLS provider to generate SSH Keys

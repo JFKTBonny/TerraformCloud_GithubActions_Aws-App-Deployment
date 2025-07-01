@@ -51,21 +51,29 @@ resource "helm_release" "lbc" {
   name            = "aws-load-balancer-controller"
   chart           = "aws-load-balancer-controller"
   version         = var.awslb_version
-  repository      = "https://aws.github.io/eks-charts" # Uses the EKS chart from AWS’s Helm repo.
+  repository      = "https://aws.github.io/eks-charts"
   namespace       = "kube-system"
   cleanup_on_fail = true
+
+  set = [
+    {
+      name  = "clusterName"
+      value = var.clustername
+    },
+    {
+      name  = "serviceAccount.name"
+      value = "aws-load-balancer-controller"
+    },
+
+    {
+      name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+      value = aws_iam_role.aws-load-balancer-controller.arn
+    }
+
+
+
+  ]
+
   
-
-  dynamic "set" {
-    for_each = {
-      "clusterName"                                               = var.clustername
-      "serviceAccount.name"                                       = "aws-load-balancer-controller" # Uses a service account named aws-load-balancer-controller.
-      "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn" = aws_iam_role.aws-load-balancer-controller.arn # ARN of the IAM role that this controller assumes.
-    }
-    content {
-      name  = set.key
-      value = set.value
-    }
-  }
-
 }
+

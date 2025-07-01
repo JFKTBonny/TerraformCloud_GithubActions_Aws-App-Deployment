@@ -34,10 +34,10 @@ output "cluster_iam_role_arn" {
   value       = module.eks.cluster_iam_role_arn
 }
 
-output "aws_auth_configmap_yaml" {
-  description = "aws auth configmap"
-  value       = module.eks.aws_auth_configmap_yaml
-}
+# output "aws_auth_configmap_yaml" {
+#   description = "aws auth configmap"
+#   value       = module.eks.aws_auth_configmap_yaml
+# }
 
 output "oidc_provider_arn" {
   value = module.eks.oidc_provider_arn

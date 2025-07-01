@@ -10,12 +10,12 @@
 module "eks" {
   source            = "terraform-aws-modules/eks/aws"
   version           = "18.26.0"
-  cluster_name      = var.clustername
+  cluster_name      = "${var.org_name}-${var.region}-${var.environment}"
   cluster_version   = var.eks_version
   subnet_ids        = var.private_subnets
   vpc_id            = var.vpc_id
   enable_irsa       = true
-  iam_role_name     = "${var.clustername}-eks-role"
+  iam_role_name     = "${var.org_name}-${var.region}-${var.environment}-eks-role"
 
   cluster_addons = {
     coredns = {
@@ -86,7 +86,7 @@ module "eks" {
   }
 
   tags = {
-    Name              = var.clustername
+    Name              = "${var.org_name}-${var.region}-${var.environment}"
     Environment       = var.environment
     terraform-managed = "true"
     "${format("kubernetes.io/cluster/%s-%s", var.org_name, var.environment)}" = "owned"

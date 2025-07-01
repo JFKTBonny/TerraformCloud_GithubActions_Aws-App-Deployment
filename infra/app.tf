@@ -131,18 +131,21 @@ resource "kubernetes_ingress_v1" "app" {
   wait_for_load_balancer = true
   metadata {
     name      = var.org_name
-    namespace = kubernetes_namespace_v1.app.metadata.0.name
+    namespace = kubernetes_namespace_v1.app.metadata[0].name
     annotations = {
-      
+      "kubernetes.io/ingress.class"               = "alb"
       "alb.ingress.kubernetes.io/scheme"          = "internet-facing"
       "alb.ingress.kubernetes.io/target-type"     = "ip"
       "alb.ingress.kubernetes.io/certificate-arn" = module.acm.acm_arn
       "alb.ingress.kubernetes.io/listen-ports"    = "[{\"HTTP\": 80}, {\"HTTPS\":443}]"
-      "alb.ingress.kubernetes.io/healthcheck-path" = "/"
+      "alb.ingress.kubernetes.io/success-codes" = "200"
+      "alb.ingress.kubernetes.io/healthcheck-timeout-seconds" = "5"
+
+      
     }
   }
+
   spec {
-    ingress_class_name = "alb"
     rule {
       host = local.url
       http {
@@ -160,5 +163,6 @@ resource "kubernetes_ingress_v1" "app" {
       }
     }
   }
+
   depends_on = [module.alb_ingress]
 }

@@ -40,5 +40,10 @@ resource "aws_acm_certificate_validation" "default" {
   certificate_arn         = aws_acm_certificate.default.arn # Links to the ACM certificate created earlier.
   validation_record_fqdns = [for record in aws_route53_record.default : record.fqdn]
 
+  
+
+
+  depends_on = [aws_route53_record.default]
+
 }
 

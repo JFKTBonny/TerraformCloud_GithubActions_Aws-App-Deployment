@@ -89,7 +89,7 @@ module "pgsql" {
 # Write the DB random password in SSM
 module "ssmw-db-password" {
 
-  org_name = var.org_name
+  org_name              = var.org_name
   source                = "./modules/ssmw"
   parameter_name        = "db_password"
   parameter_path        = "${var.org_name}/database"
@@ -104,7 +104,7 @@ module "ssmw-db-password" {
 module "ssmw-db-endpoint" {
   source = "./modules/ssmw"
 
-  org_name = var.org_name
+  org_name              = var.org_name
   parameter_name        = "db_endpoint_url"
   parameter_path        = "${var.org_name}/database"
   parameter_value       = module.pgsql.db_instance_address

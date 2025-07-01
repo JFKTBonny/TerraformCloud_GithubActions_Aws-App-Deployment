@@ -32,3 +32,13 @@ variable "db_user_name" {
   description = "Name of User for Accessing PGQSL Database"
   type        = string
 }
+
+variable "clustername" {
+  description = "Cluster Name"
+  type        = string
+  default = "jfktbonny-us-east-2-dev"
+}
+
+variable "zone_id" {
+  default = "Z086982133XZDQQ52UFW5"
+}

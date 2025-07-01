@@ -1,7 +1,4 @@
-variable "clustername" {
-  description = "Cluster Name"
-  type        = string
-}
+
 
 variable "eks_version" {
   description = "AWS EKS Kubernetes Version"
@@ -31,4 +28,10 @@ variable "instance_types" {
 variable "org_name" {
   description = "Name of Organisation"
   type        = string
+}
+
+variable "region" {
+  description = "AWS region"
+  type        = string
+ 
 }

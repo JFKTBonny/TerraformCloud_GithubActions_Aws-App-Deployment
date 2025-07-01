@@ -19,8 +19,8 @@ locals {
 
 # Fetch the Zone ID of the hosted domains
 data "aws_route53_zone" "domain" {
-  name = "${var.domain}."
-
+  name         = "gitops.jfktbonnyzone.online"
+  private_zone = false
 }
 
 # Generate Certificate for the particular domain

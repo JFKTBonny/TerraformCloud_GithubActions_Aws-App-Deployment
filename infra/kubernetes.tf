@@ -8,7 +8,7 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
   exec {
     api_version = "client.authentication.k8s.io/v1alpha1"
-    command     = "aws"  
+    command     = "aws"
     args = [
       "eks",
       "get-token",
@@ -24,12 +24,12 @@ provider "kubernetes" {
 # host: API endpoint of the EKS cluster.
 # Helm needs to talk to Kubernetes → so you provide the same connection/authentication details inside the nested kubernetes {} block
 provider "helm" {
-  kubernetes {
-    host                   = module.eks.cluster_endpoint  
-    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data) 
-    exec {
+  kubernetes = {
+    host                   = module.eks.cluster_endpoint
+    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+    exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "aws"    
+      command     = "aws"
       args = [
         "eks",
         "get-token",
