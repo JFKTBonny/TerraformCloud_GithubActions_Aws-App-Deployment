@@ -36,7 +36,7 @@ variable "db_user_name" {
 variable "clustername" {
   description = "Cluster Name"
   type        = string
-  default = "jfktbonny-us-east-2-dev"
+  default = "jfktbonny-us-east-1-dev"
 }
 
 variable "zone_id" {
